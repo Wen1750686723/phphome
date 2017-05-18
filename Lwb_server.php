@@ -17,7 +17,7 @@ class Lwb_server
 	 * @access  public
 	 * @return  string
 	 */
-	function is_spider($record = true)
+	public function is_spider($record = true)
 	{
 	    static $spider = NULL;
 
@@ -87,7 +87,7 @@ class Lwb_server
 	 * @access  private
 	 * @return  void
 	 */
-	function get_os()
+	public function get_os()
 	{
 	    if (empty($_SERVER['HTTP_USER_AGENT']))
 	    {
@@ -214,5 +214,35 @@ class Lwb_server
 	    }
 
 	    return $os;
+	}
+
+	/**
+	 * 获得客户端的真实ip
+	 *
+	 * @access  private
+	 * @return  void
+	 */
+	public function get_ip(){
+	    //判断服务器是否允许$_SERVER
+	    if(isset($_SERVER)){    
+	        if(isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+	            $realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+	        }elseif(isset($_SERVER["HTTP_CLIENT_IP"])) {
+	            $realip = $_SERVER["HTTP_CLIENT_IP"];
+	        }else{
+	            $realip = $_SERVER["REMOTE_ADDR"];
+	        }
+	    }else{
+	        //不允许就使用getenv获取  
+	        if(getenv("HTTP_X_FORWARDED_FOR")){
+	              $realip = getenv( "HTTP_X_FORWARDED_FOR");
+	        }elseif(getenv("HTTP_CLIENT_IP")) {
+	              $realip = getenv("HTTP_CLIENT_IP");
+	        }else{
+	              $realip = getenv("REMOTE_ADDR");
+	        }
+	    }
+
+	    return $realip;
 	}
 }
