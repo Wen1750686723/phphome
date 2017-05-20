@@ -160,6 +160,9 @@ class Lwb_server
 	    {
 	        $os = 'Macintosh';
 	    }
+	    elseif (strpos($agent, 'mac') !== false){
+	    	$os = 'mac';
+	    }
 	    elseif (strpos($agent, 'powerpc') !== false)
 	    {
 	        $os = 'PowerPC';
@@ -244,5 +247,17 @@ class Lwb_server
 	    }
 
 	    return $realip;
+	}
+	/**
+	 * 判断是否SSL协议
+	 * @return boolean
+	 */
+	function is_ssl() {
+	    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
+	        return true;
+	    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+	        return true;
+	    }
+	    return false;
 	}
 }
