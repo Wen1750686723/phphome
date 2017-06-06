@@ -33,4 +33,25 @@ class Lwb_array{
 		// }
 		// return array_reverse($array);
 	}
+     /**
+     * 冒泡排序
+     *
+     * @access      public
+     * @param       array      $b            数组
+     * @return      array      返回的排序好的数组
+     */
+	function sort($b){
+		$len=count($b);
+		for($k=0;$k<=$len;$k++)
+        {
+            for($j=$len-1;$j>$k;$j--){
+                if($b[$j]["value"]<$b[$j-1]["value"]){
+                    $temp = $b[$j];
+                    $b[$j] = $b[$j-1];
+                    $b[$j-1] = $temp;
+                }
+            }
+        }
+        return $b;
+	}
 }
