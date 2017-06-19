@@ -26,8 +26,8 @@ class Lwb_postjson
 	}
 	public static function postjson($url,$data_string)
 	{
-		$crypt = new Lwb_des(self::$des_key);
-		$data_string = $crypt->encrypt($data_string);
+		// $crypt = new Lwb_des(self::$des_key);
+		// $data_string = $crypt->encrypt($data_string);
 		$time_start=microtime(true);
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_POST, 1);  
@@ -44,7 +44,7 @@ class Lwb_postjson
         $return_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
         $time_end=microtime(true);
         $time_cost=$time_end-$time_start;
-        file_put_contents(ROOT_PATH."plugins/curl".date("Ymd").".log", date("Y-m-d H:i:s")."  ".$return_code."   ".$time_cost."  " .serialize($return_content).PHP_EOL, FILE_APPEND);
+        // file_put_contents(ROOT_PATH."plugins/curl".date("Ymd").".log", date("Y-m-d H:i:s")."  ".$return_code."   ".$time_cost."  " .serialize($return_content).PHP_EOL, FILE_APPEND);
         if (!$return_content) {
         	echo "无法连接到主服务器！";exit;
         }

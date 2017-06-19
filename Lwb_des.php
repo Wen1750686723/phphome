@@ -17,13 +17,10 @@
  */
 class Lwb_des
 {
-    
-      
-    // echo $str.' <=> '.$mstr;
     var $key;
     var $iv; //偏移量
   
-    function Lwb_des($key, $iv=0)
+    public function __construct($key, $iv=0)
     {
         $this->key = $key;
         if($iv == 0)
@@ -36,14 +33,8 @@ class Lwb_des
         }
     }
   
-    /**
-     * 加密处理函数
-     *
-     * @access      public
-     * @param       string      $str       加密的字符串
-     * @return      string      加密后的字符串
-     */
-    function encrypt($str)
+    //加密
+    public function encrypt($str)
     {       
         $size = mcrypt_get_block_size ( MCRYPT_DES, MCRYPT_MODE_CBC );
         $str = $this->pkcs5Pad ( $str, $size );
@@ -52,13 +43,7 @@ class Lwb_des
         return base64_encode($data);
     }
   
-    /**
-     * 解密处理函数
-     *
-     * @access      public
-     * @param       string      $str       解密的字符串
-     * @return      string      解密后的字符串
-     */
+    //解密
     function decrypt($str)
     {
         $str = base64_decode ($str);
@@ -68,7 +53,7 @@ class Lwb_des
         return $str;
     }
   
-    function hex2bin($hexData)
+    public function hex2bin($hexData)
     {
         $binData = "";
         for($i = 0; $i < strlen ( $hexData ); $i += 2)
@@ -78,13 +63,13 @@ class Lwb_des
         return $binData;
     }
   
-    function pkcs5Pad($text, $blocksize)
+    public function pkcs5Pad($text, $blocksize)
     {
         $pad = $blocksize - (strlen ( $text ) % $blocksize);
         return $text . str_repeat ( chr ( $pad ), $pad );
     }
   
-    function pkcs5Unpad($text)
+    public function pkcs5Unpad($text)
     {
         $pad = ord ( $text {strlen ( $text ) - 1} );
         if ($pad > strlen ( $text ))
@@ -94,6 +79,13 @@ class Lwb_des
         return substr ( $text, 0, - 1 * $pad );
     }
 }
-
+// header("Content-type: text/html; charset=utf-8");
+// $str = '{"uid":"1669"}';
+// $key= 'member16';
+// $crypt = new DES($key);
+// $mstr = $crypt->encrypt($str);
+// $str = $crypt->decrypt($mstr);
+  
+// echo $str.' <=> '.$mstr;
   
 ?>
