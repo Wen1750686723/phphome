@@ -20,4 +20,7 @@ class Lwb_url
 	    $tempu=parse_url($str);  
 	    return $tempu["scheme"]."://".$tempu["host"];
 	}
+	public static function gethttptype(){
+		return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+	}
 }
