@@ -242,4 +242,48 @@ class Lwb_time
 
 	    return getdate($local_time);
 	}
+	/**
+	 * 获得古代两个时间相差天数
+	 *
+	 * @param   $dayhigh  string     比较高的天数
+	 * @param   $daylow  string      比较低的天数
+	 *
+	 * @return  string 想差天数
+	 */
+	static function diffdays($dayhigh,$daylow){
+		$datetime1 = new DateTime($daylow);
+		$datetime2 = new DateTime($dayhigh);
+		 
+		$interval = $datetime1->diff($datetime2);
+		return abs($interval->days);
+	}
+	/**
+	 * 获得古代两个时间相差天数
+	 *
+	 * @param   $dayhigh  string     比较高的天数
+	 * @param   $daylow  string      比较低的天数
+	 *
+	 * @return  string 想差天数
+	 */
+	static function diffdaysmk($dayhigh,$daylow){
+		$date_1 = $dayhigh;  
+	    $date_2=  $daylow;  
+	    $date1_arr = explode("-",$date_1);  
+	    $date2_arr = explode("-",$date_2);  
+	    $day1 = mktime(0,0,0,$date1_arr[1],$date1_arr[2],$date1_arr[0]);  
+	    $day2 = mktime(0,0,0,$date2_arr[1],$date2_arr[2],$date2_arr[0]);  
+	    $days = round(($day1 - $day2)/3600/24);  
+	    return abs($days);
+	}
+		/**
+	 * 获得古代两个时间相差天数
+	 *
+	 * @param   $dayhigh  string     比较高的天数
+	 * @param   $daylow  string      比较低的天数
+	 *
+	 * @return  string 想差天数
+	 */
+	static function diffdaysstr($dayhigh,$daylow){
+		return abs(round((strtotime('1901-01-12')-strtotime('1885-11-25'))/3600/24));
+	}
 }
