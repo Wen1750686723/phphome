@@ -31,8 +31,9 @@ class Lwb_memcache{
 	
 	public function __construct()
 	{
-		$this->client_type = class_exists('Memcache') ? "Memcache" : (class_exists('Memcached') ? "Memcached" : FALSE);
-		
+		// $this->client_type = class_exists('Memcache') ? "Memcache" : (class_exists('Memcached') ? "Memcached" : FALSE);
+
+		$this->client_type = "Memcached";
 		if($this->client_type)
 		{
 			// 判断引入类型
