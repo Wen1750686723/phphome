@@ -23,4 +23,11 @@ class Lwb_url
 	public static function gethttptype(){
 		return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
 	}
+	public static function getextension($url){
+		// $url = "http://www.sina.com.cn/abc/de/fg.php?id=1";
+		$arr=parse_url($url);
+		$pathArr=pathinfo($arr['path']);
+		return $pathArr['extension'];
+		// print_r($pathArr['extension']);
+	}
 }

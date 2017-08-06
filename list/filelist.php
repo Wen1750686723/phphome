@@ -13,35 +13,23 @@ class filelist{
 	public $array=array();
 	public $path;
 	public function __construct() {
+		require_once("../Lwb_filelock.php");
 		$this->path=dirname(__FILE__).DIRECTORY_SEPARATOR."data.txt";
 	}
 	public function push($k){
 		$file = fopen($this->path,"r+");
+  		$data=fread($file,filesize($this->path));
+  		$array=(array)json_decode($data,true);	  
+	  	// var_dump($data);
+	  	// var_dump($array);	
+	  	array_push($array, $k);
+	  	// var_dump($array);
+	    ftruncate($file,0); // 将文件截断到给定的长度
 
-		// 排它性的锁定
-		if (flock($file,LOCK_EX))
-		{
-			var_dump(flock($file,LOCK_EX));exit;
+		rewind($file); // 倒回文件指针的位置	
 
-	  		$data=fread($file,filesize($this->path));
-	  		$array=(array)json_decode($data,true);	  
-		  	// var_dump($data);
-		  	// var_dump($array);	
-		  	array_push($array, $k);
-		  	// var_dump($array);
-		    ftruncate($file,0); // 将文件截断到给定的长度
-
-    		rewind($file); // 倒回文件指针的位置	
-
-		    $result=fwrite($file,json_encode($array));
-		    // release lock
-		    flock($file,LOCK_UN);
-		}
-		else
-		{
-		    echo "Error locking file!";
-		}
-
+	    $result=fwrite($file,json_encode($array));
+	    // release lock
 		fclose($file);
 		if ($result) {
 			return true;
@@ -54,35 +42,24 @@ class filelist{
 	public function pop(){
 		$file = fopen($this->path,"r+");
 
-		// 排它性的锁定
-		if (flock($file,LOCK_EX))
-		{
-		  	if (filesize($this->path)==0) {
-		  		$data="";
-		  		$array=array();
-		  	}else{
-		  		$data=fread($file,filesize($this->path));
-		  		$array=(array)json_decode($data);
-		  	}
-		  	
-		  	if (empty($data)) {
-		  		$k=false;
-		  	}else{
-		  		$k=array_pop($array);
-			    ftruncate($file,0); // 将文件截断到给定的长度
+	  	if (filesize($this->path)==0) {
+	  		$data="";
+	  		$array=array();
+	  	}else{
+	  		$data=fread($file,filesize($this->path));
+	  		$array=(array)json_decode($data);
+	  	}
+	  	
+	  	if (empty($data)) {
+	  		$k=false;
+	  	}else{
+	  		$k=array_pop($array);
+		    ftruncate($file,0); // 将文件截断到给定的长度
 
-	    		rewind($file); // 倒回文件指针的位置	
+    		rewind($file); // 倒回文件指针的位置	
 
-			    $result=fwrite($file,json_encode($array,true));
-		  	}
-		  	
-		    // release lock
-		    flock($file,LOCK_UN);
-		}
-		else
-		{
-		    echo "Error locking file!";
-		}
+		    $result=fwrite($file,json_encode($array,true));
+	  	}	  	
 
 		fclose($file);
 		return $k;
@@ -90,9 +67,6 @@ class filelist{
 	public function len(){
 		$file = fopen($this->path,"r+");
 
-		// 排它性的锁定
-		if (flock($file,LOCK_EX))
-		{
 		  	if (filesize($this->path)==0) {
 		  		$data="";
 		  		$array=array();
@@ -101,14 +75,6 @@ class filelist{
 		  		$array=(array)json_decode($data);
 
 		  	}
-		  	
-		    // release lock
-		    flock($file,LOCK_UN);
-		}
-		else
-		{
-		    echo "Error locking file!";
-		}
 		fclose($file);
 		return count($array);
 	}
